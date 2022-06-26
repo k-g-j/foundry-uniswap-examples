@@ -101,6 +101,7 @@ contract SwapExamplesTest is Test {
         uint amountOut = swapExamples.swapExactInputSingle(amountIn);
 
         emit log_named_uint("DAI balance", daiToken.balanceOf(address(this)));
+        emit log_named_uint("WETH balance", wethToken.balanceOf(address(this)));
 
         uint postDiaBalance = daiToken.balanceOf(address(this));
 
