@@ -36,7 +36,10 @@ contract SwapExamplesTest is Test {
         uint postDiaBalance = daiToken.balanceOf(address(this));
 
         assertEq(amountOut, daiToken.balanceOf(address(this)));
-        assertEq(daiToken.balanceOf(address(this)), preDiaBalance + postDiaBalance);
+        assertEq(
+            daiToken.balanceOf(address(this)),
+            preDiaBalance + postDiaBalance
+        );
         assertEq(wethToken.balanceOf(address(this)), preWethBalance - amountIn);
     }
 
@@ -47,12 +50,65 @@ contract SwapExamplesTest is Test {
         wethToken.deposit{value: wethAmountInMax}();
         wethToken.approve(address(swapExamples), wethAmountInMax);
 
-        uint wethAmountIn = swapExamples.swapExactOutputSingle(diaAmountOut, wethAmountInMax);
+        uint wethAmountIn = swapExamples.swapExactOutputSingle(
+            diaAmountOut,
+            wethAmountInMax
+        );
 
         emit log_named_uint("DAI balance", daiToken.balanceOf(address(this)));
         emit log_named_uint("WETH balance", wethToken.balanceOf(address(this)));
 
-        assertEq(wethToken.balanceOf(address(this)), wethAmountInMax - wethAmountIn);
+        assertLe(wethAmountIn, wethAmountInMax);
+        assertEq(
+            wethToken.balanceOf(address(this)),
+            wethAmountInMax - wethAmountIn
+        );
         assertEq(daiToken.balanceOf(address(this)), diaAmountOut);
+    }
+
+    function test__SwapExactInputMultiHop() public {
+        uint amountIn = 10e18;
+        wethToken.deposit{value: amountIn}();
+        wethToken.approve(address(swapExamples), amountIn);
+
+        uint preDiaBalance = daiToken.balanceOf(address(this));
+        uint preWethBalance = wethToken.balanceOf(address(this));
+        assertEq(preDiaBalance, 0);
+
+        uint amountOut = swapExamples.swapExactInputSingle(amountIn);
+
+        emit log_named_uint("DAI balance", daiToken.balanceOf(address(this)));
+
+        uint postDiaBalance = daiToken.balanceOf(address(this));
+
+        assertEq(amountOut, daiToken.balanceOf(address(this)));
+        assertEq(
+            daiToken.balanceOf(address(this)),
+            preDiaBalance + postDiaBalance
+        );
+        assertEq(wethToken.balanceOf(address(this)), preWethBalance - amountIn);
+    }
+
+    function test__SwapExactOutputMultihop() public {
+        uint amountIn = 10e18;
+        wethToken.deposit{value: amountIn}();
+        wethToken.approve(address(swapExamples), amountIn);
+
+        uint preDiaBalance = daiToken.balanceOf(address(this));
+        uint preWethBalance = wethToken.balanceOf(address(this));
+        assertEq(preDiaBalance, 0);
+
+        uint amountOut = swapExamples.swapExactInputSingle(amountIn);
+
+        emit log_named_uint("DAI balance", daiToken.balanceOf(address(this)));
+
+        uint postDiaBalance = daiToken.balanceOf(address(this));
+
+        assertEq(amountOut, daiToken.balanceOf(address(this)));
+        assertEq(
+            daiToken.balanceOf(address(this)),
+            preDiaBalance + postDiaBalance
+        );
+        assertEq(wethToken.balanceOf(address(this)), preWethBalance - amountIn);
     }
 }
