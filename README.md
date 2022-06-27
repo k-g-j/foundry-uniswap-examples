@@ -11,4 +11,6 @@ For more information on the UniswapV3 contracts check the [documentation](https:
 
 2. Create a .env file at the route of your project with ```MAINNET_FORKING_URL=``` and set the url as an RPC url from Alchemy, Infuria, Moralis etc . . .
 
-3. To run the test "forge test --fork-url $MAINNET_FORKING_URL -vv"
+3. To run the test:
+   - "source .env"
+   - "forge test --fork-url $MAINNET_FORKING_URL -vv"
