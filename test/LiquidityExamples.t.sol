@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.0;
+pragma solidity >=0.7.6;
 
 import "forge-std/Test.sol";
 import "src/LiquidityExamples.sol";
 import "src/interfaces/IERC20.sol";
 
-contract SwapExamplesTest is Test {
+contract LiquidityExamplesTest is Test {
     address private constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
     address private constant USDC = 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48;
     address private constant DAI_WHALE =
