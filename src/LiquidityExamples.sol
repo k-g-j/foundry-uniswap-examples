@@ -8,7 +8,6 @@ import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/INonfungiblePositionManager.sol";
 import "@uniswap/v3-periphery/contracts/base/LiquidityManagement.sol";
-import "forge-std/console.sol";
 
 contract LiquidityExamples is IERC721Receiver {
     address public constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
@@ -68,9 +67,6 @@ contract LiquidityExamples is IERC721Receiver {
             token0: token0,
             token1: token1
         });
-
-        console.log("Token id", tokenId);
-        console.log("Liquidity", liquidity);
     }
 
     /// @notice Calls the mint function defined in periphery, mints the same amount of each token. For this example we are providing 1000 DAI and 1000 USDC in liquidity

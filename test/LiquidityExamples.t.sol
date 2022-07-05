@@ -15,10 +15,28 @@ contract LiquidityExamplesTest is Test {
     LiquidityExamples liquidityExamples;
     IERC20 daiToken = IERC20(DAI);
     IERC20 usdcToken = IERC20(USDC);
+    uint daiAmount = 100e18;
+    uint usdcAmount = 100e6;
 
     function setUp() public {
         liquidityExamples = new LiquidityExamples();
         vm.label(address(this), "user");
         vm.label(address(liquidityExamples), "LiquidityContract");
+        vm.startPrank(DAI_WHALE);
+        daiToken.approve(address(this), daiAmount);
+        daiToken.transfer(address(this), daiAmount);
+        vm.stopPrank();
+        vm.prank(USDC_WHALE);
+        usdcToken.approve(address(this), usdcAmount);
+        usdcToken.transfer(address(this), usdcAmount);
+        vm.stopPrank();
+    }
+
+    function test__mintNewPosition() public {
+        emit log_named_uint("DAI balance after add liquidity", daiToken.balanceOf(address(this)));
+        emit log_named_uint("USDC balance after add liquidity", usdcToken.balanceOf(address(this)));
+        liquidityExamples.mintNewPosition()
+        console.log("Token id", tokenId);
+        console.log("Liquidity", liquidity);
     }
 }
