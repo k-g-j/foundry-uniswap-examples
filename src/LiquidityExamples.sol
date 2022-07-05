@@ -100,8 +100,8 @@ contract LiquidityExamples is IERC721Receiver {
             amount1ToMint
         );
 
-        INonfungiblePositionManager.MintParams
-            memory params = INonfungiblePositionManager.MintParams({
+        INonfungiblePositionManager.MintParams memory params = INonfungiblePositionManager
+            .MintParams({
                 token0: DAI,
                 token1: USDC,
                 fee: poolFee,
@@ -109,7 +109,7 @@ contract LiquidityExamples is IERC721Receiver {
                 tickUpper: TickMath.MAX_TICK,
                 amount0Desired: amount0ToMint,
                 amount1Desired: amount1ToMint,
-                amount0Min: 0,
+                amount0Min: 0, // would need to change slippage for production
                 amount1Min: 0,
                 recipient: address(this),
                 deadline: block.timestamp
@@ -142,5 +142,9 @@ contract LiquidityExamples is IERC721Receiver {
             uint256 refund1 = amount1ToMint - amount1;
             TransferHelper.safeTransfer(USDC, msg.sender, refund1);
         }
+    }
+
+    function getDeposits(uint256 _tokenId) external view returns (Deposit memory) {
+        return deposits[_tokenId];
     }
 }

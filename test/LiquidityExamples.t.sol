@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.7.6;
+pragma abicoder v2;
 
 import "forge-std/Test.sol";
 import "src/LiquidityExamples.sol";
@@ -39,16 +40,43 @@ contract LiquidityExamplesTest is Test {
         daiToken.transfer(address(liquidityExamples), daiAmount);
         usdcToken.approve(address(liquidityExamples), usdcAmount);
         usdcToken.transfer(address(liquidityExamples), usdcAmount);
-        emit log_named_uint("DAI balance after add liquidity", daiToken.balanceOf(address(liquidityExamples)));
-        emit log_named_uint("USDC balance after add liquidity", usdcToken.balanceOf(address(liquidityExamples)));
-        (uint tokenId, uint liquidity, uint amount0, uint amount1) = liquidityExamples.mintNewPosition();
+        emit log_named_uint(
+            "DAI balance after add liquidity",
+            daiToken.balanceOf(address(liquidityExamples))
+        );
+        emit log_named_uint(
+            "USDC balance after add liquidity",
+            usdcToken.balanceOf(address(liquidityExamples))
+        );
+        (
+            uint tokenId,
+            uint liquidity,
+            uint amount0,
+            uint amount1
+        ) = liquidityExamples.mintNewPosition();
         assertGt(tokenId, 0);
         assertGt(liquidity, 0);
-        emit log_named_uint("Token id", tokenId);
+        assertEq(liquidityExamples.getDeposits(tokenId).owner, address(this));
+        assertEq(liquidityExamples.getDeposits(tokenId).liquidity, liquidity);
+        assertEq(
+            liquidityExamples.getDeposits(tokenId).token0,
+            address(daiToken)
+        );
+        assertEq(
+            liquidityExamples.getDeposits(tokenId).token1,
+            address(usdcToken)
+        );
+        emit log_named_uint("Token ID", tokenId);
         emit log_named_uint("Liquidity", liquidity);
-        emit log_named_uint("amount0", amount0);
-        emit log_named_uint("amount1", amount1);
-        emit log_named_uint("DAI balance after add liquidity", daiToken.balanceOf(address(liquidityExamples)));
-        emit log_named_uint("USDC balance after add liquidity", usdcToken.balanceOf(address(liquidityExamples)));
+        emit log_named_uint("DAI amount used to mint", amount0);
+        emit log_named_uint("USDC amount used to mint", amount1);
+        emit log_named_uint(
+            "DAI balance after add liquidity",
+            daiToken.balanceOf(address(liquidityExamples))
+        );
+        emit log_named_uint(
+            "USDC balance after add liquidity",
+            usdcToken.balanceOf(address(liquidityExamples))
+        );
     }
 }
