@@ -115,7 +115,7 @@ contract LiquidityExamples is IERC721Receiver {
                 deadline: block.timestamp
             });
 
-        // Note that the pool defined by DAI/USDC and fee tier 0.3% must already be created and initialized in order to mint
+        // Note that the pool defined by DAI/USDC and fee tier 0.1% must already be created and initialized in order to mint
         (tokenId, liquidity, amount0, amount1) = nonfungiblePositionManager
             .mint(params);
 

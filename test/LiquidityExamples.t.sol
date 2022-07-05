@@ -22,21 +22,33 @@ contract LiquidityExamplesTest is Test {
         liquidityExamples = new LiquidityExamples();
         vm.label(address(this), "user");
         vm.label(address(liquidityExamples), "LiquidityContract");
+        assertGt(daiToken.balanceOf(DAI_WHALE), daiAmount);
+        assertGt(usdcToken.balanceOf(address(USDC_WHALE)), usdcAmount);
         vm.startPrank(DAI_WHALE);
         daiToken.approve(address(this), daiAmount);
         daiToken.transfer(address(this), daiAmount);
         vm.stopPrank();
-        vm.prank(USDC_WHALE);
+        vm.startPrank(USDC_WHALE);
         usdcToken.approve(address(this), usdcAmount);
         usdcToken.transfer(address(this), usdcAmount);
         vm.stopPrank();
     }
 
     function test__mintNewPosition() public {
-        emit log_named_uint("DAI balance after add liquidity", daiToken.balanceOf(address(this)));
-        emit log_named_uint("USDC balance after add liquidity", usdcToken.balanceOf(address(this)));
-        liquidityExamples.mintNewPosition()
-        console.log("Token id", tokenId);
-        console.log("Liquidity", liquidity);
+        daiToken.approve(address(liquidityExamples), daiAmount);
+        daiToken.transfer(address(liquidityExamples), daiAmount);
+        usdcToken.approve(address(liquidityExamples), usdcAmount);
+        usdcToken.transfer(address(liquidityExamples), usdcAmount);
+        emit log_named_uint("DAI balance after add liquidity", daiToken.balanceOf(address(liquidityExamples)));
+        emit log_named_uint("USDC balance after add liquidity", usdcToken.balanceOf(address(liquidityExamples)));
+        (uint tokenId, uint liquidity, uint amount0, uint amount1) = liquidityExamples.mintNewPosition();
+        assertGt(tokenId, 0);
+        assertGt(liquidity, 0);
+        emit log_named_uint("Token id", tokenId);
+        emit log_named_uint("Liquidity", liquidity);
+        emit log_named_uint("amount0", amount0);
+        emit log_named_uint("amount1", amount1);
+        emit log_named_uint("DAI balance after add liquidity", daiToken.balanceOf(address(liquidityExamples)));
+        emit log_named_uint("USDC balance after add liquidity", usdcToken.balanceOf(address(liquidityExamples)));
     }
 }
