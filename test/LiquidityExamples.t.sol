@@ -3,7 +3,6 @@ pragma solidity >=0.7.6;
 
 import "forge-std/Test.sol";
 import "src/LiquidityExamples.sol";
-import "src/interfaces/IERC20.sol";
 
 contract LiquidityExamplesTest is Test {
     address private constant DAI = 0x6B175474E89094C44Da98b954EedeAC495271d0F;
